@@ -1,22 +1,103 @@
-const express = require('express');
-const connectDB = require('./db');
+//crear un servidor con express
+const express = require ('express');
 
+//incliur el cors
+const cors = require('cors');
+
+//incluir la body-parcer (para procesar peticiones post)
+const bodyParser = require('body-parser');
+
+//incluir la conexcion mysql
+const config = require ('./config');
+
+//crear un server con express
 const app = express();
 
-// Conectar a la base de datos
-connectDB();
+//usar el cors
+app.use (cors());
 
-// Middlewares
-app.use(express.json());
+//usar el body-parser para procesar peticiones POST
+app.use(bodyParser.json());
 
-// Definir tus rutas
-app.get('/', (req, res) => {
-  res.send('API funcionando');
+//usar el puerto 3000
+const port = 3000;
+
+//crear una ruta por defecto
+app.get ('/', (req, res) => {
+    res.send('hello world')
 });
 
-// Iniciar el servidor
-const PORT = process.env.PORT || 3306;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//crear una ruta para obtener todos los proyectos
+app.get ('/autores', (req, res) => {
+    //realiza la ruta
+config.query('select * From autores', (err, filas) => {
+    if (err){
+        console.log(err);
+        res.status(500).send('Error al obtener los autores');
+
+    }else {
+        res.json(filas);
+    }
+
+});
+}
+)
+//crear una ruta para obtener todos los proyectos
+app.get ('/libros', (req, res) => {
+    //realiza la ruta
+config.query('select * From miembro', (err, filas) => {
+    if (err){
+        console.log(err);
+        res.status(500).send('Error al obtener los miembro');
+
+    }else {
+        res.json(filas);
+    }
+});
+}
+)
 
 
+//crear una ruta para obtener todas las actividades de un proyecto de id en la URL
+//luego la query
+//
+app.get ('/autores/:nombre/nacionalidad', (req, res) => {
+    //realiza la ruta
+config.query('select * From actividades', req.params.id,  (err, filas) => {
+    if (err){
+        console.log(err);
+        res.status(500).send('Error al obtener los miembro');
 
+    }else {
+        res.json(filas);
+    }
+});
+}
+)
+
+//Store a project in the database
+app.post('/biblioteca', (req, res) => {
+    // Get the data from the request
+    const data = req.body;
+    console.log(data);
+
+    // Perform the query
+    config.query('INSERT INTO autores SET ?', data, (err, result) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error al guardar el proyecto');
+        } else {
+            // Return the response
+            res.json({
+                id: result.insertId,
+                ...data
+            });
+        }
+    });
+});
+
+
+//iniciar el servidor
+app.listen (port, ()  => {
+console.log(`sever running on port ${port}`);
+});
