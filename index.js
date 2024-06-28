@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const config = require ('./config');
 
 const app = express();
+exports.app = app;
 
 
 app.use (cors());
@@ -48,12 +49,12 @@ config.query('select * From libros', (err, filas) => {
 )
 
 
-app.get ('/autores/:nombre/nacionalidad', (req, res) => {
+app.get ('/cantidad', (req, res) => {
 
-config.query('select * From actividades', req.params.id,  (err, filas) => {
+config.query('select * From cantidad', req.params.id,  (err, filas) => {
     if (err){
         console.log(err);
-        res.status(500).send('Error al obtener los miembro');
+        res.status(500).send('Error al obtener la cantidad');
 
     }else {
         res.json(filas);
@@ -61,25 +62,37 @@ config.query('select * From actividades', req.params.id,  (err, filas) => {
 });
 }
 )
+config.query('select * From categorias', req.params.id,  (err, filas) => {
+    if (err){
+        console.log(err);
+        res.status(500).send('Error al obtener las categorias');
 
-app.post('/biblioteca', (req, res) => {
-  
-    const data = req.body;
-    console.log(data);
-
-    config.query('INSERT INTO autores SET ?', data, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Error al guardar el proyecto');
-        } else {
-           
-            res.json({
-                id: result.insertId,
-                ...data
-            });
-        }
-    });
+    }else {
+        res.json(filas);
+    }
 });
+
+config.query('select * from usuarios', req.params.id,  (err, filas) => {
+    if (err){
+        console.log(err);
+        res.status(500).send('Error al obtener los usuarios');
+
+    }else {
+        res.json(filas);
+    }
+});
+
+config.query('select * From prestamos ', req.params.id,  (err, filas) => {
+    if (err){
+        console.log(err);
+        res.status(500).send('Error al obtener los prestamos');
+
+    }else {
+        res.json(filas);
+    }
+});
+
+
 
 
 //iniciar el servidor
