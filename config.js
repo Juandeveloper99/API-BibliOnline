@@ -1,6 +1,5 @@
-const mysql = require('mysql2'); //usar la libreria4
+const mysql = require('mysql2'); 
 
-//configurar la base de datos
 const config = mysql.createConnection({
     host: '127.0.0.1',
     user: 'root',
@@ -8,4 +7,4 @@ const config = mysql.createConnection({
     database: 'biblioteca',
 });
 
-module.exports = config; // exportar la config
+module.exports = config; 
