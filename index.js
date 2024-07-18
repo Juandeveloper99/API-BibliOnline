@@ -30,10 +30,10 @@ app.get ('/', (req, res) => {
 //crear una ruta para obtener todos los proyectos
 app.get ('/autores', (req, res) => {
     //realiza la ruta
-config.query('select * From biblioteca_app', (err, filas) => {
+config.query('select * From autores ', (err, filas) => {
     if (err){
         console.log(err);
-        res.status(500).send('Error al obtener los autores');
+        res.status(500).send('Error al obtener los libros');
 
     }else {
         res.json(filas);
@@ -63,12 +63,14 @@ app.post('/autores', (req, res) => {
     });
 });
 
+//copiar y adaptar a las demas tablas
+
 app.get ('/libros', (req, res) => {
     //realiza la ruta
-config.query('select * From biblioteca_app ', (err, filas) => {
+config.query('select * From libros ', (err, filas) => {
     if (err){
         console.log(err);
-        res.status(500).send('Error al obtener los biblioteca_app');
+        res.status(500).send('Error al obtener los libros');
 
     }else {
         res.json(filas);
@@ -101,7 +103,7 @@ app.post('/libros', (req, res) => {
 
 app.get ('/genero', (req, res) => {
     //realiza la ruta
-config.query('select * From biblioteca_app ', (err, filas) => {
+config.query('select * From genero', (err, filas) => {
     if (err){
         console.log(err);
         res.status(500).send('Error al obtener los generos ');
@@ -136,7 +138,7 @@ app.post('/genero', (req, res) => {
 
 app.get ('/usuarios', (req, res) => {
     //realiza la ruta
-config.query('select * From biblioteca_app', (err, filas) => {
+config.query('select * From usuarios', (err, filas) => {
     if (err){
         console.log(err);
         res.status(500).send('Error al obtener los usuarios ');
@@ -172,7 +174,7 @@ app.post('/usuarios', (req, res) => {
 
 app.get ('/cantidad', (req, res) => {
     //realiza la ruta
-config.query('select * From biblioteca_app ', (err, filas) => {
+config.query('select * From cantidad', (err, filas) => {
     if (err){
         console.log(err);
         res.status(500).send('Error al obtener las cantidades ');
@@ -208,7 +210,7 @@ app.post('/cantidad', (req, res) => {
 
 app.get ('/prestamos', (req, res) => {
     //realiza la ruta
-config.query('select * From biblioteca_app', (err, filas) => {
+config.query('select * From prestamos', (err, filas) => {
     if (err){
         console.log(err);
         res.status(500).send('Error al obtener los prestamos ');
@@ -241,48 +243,6 @@ app.post('/prestamos', (req, res) => {
     });
 });
 
-
-
-
-//Store a project in the database
-
-
-
-
-app.get ('/biblioteca_app/:id_libro', (req, res) => {
-    //realiza la ruta
-config.query('select * From acutores where id_libro = ?', req.params.id,  (err, filas) => {
-    if (err){
-        console.log(err);
-        res.status(500).send('Error al obtener los libros');
-
-    }else {
-        res.json(filas);
-    }
-});
-}
-)
-
-//Store a project in the database
-app.post('/Biblioteca_proyecto', (req, res) => {
-    // Get the data from the request
-    const data = req.body;
-    console.log(data);
-
-     // Perform the query
-     config.query('INSERT INTO biblioteca_app SET ?', data, (err, result) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Error al guardar en la biblioteca');
-        } else {
-            // Return the response
-            res.json({
-                id: result.insertId,
-                ...data
-            });
-        }
-    });
-});
 
 //iniciar el servidor
 app.listen (port, ()  => {
