@@ -1,36 +1,17 @@
-//crear un servidor con express
-const express = require ('express');
-
-//incliur el cors
-const cors = require('cors');
-
-//incluir la body-parcer (para procesar peticiones post)
-const bodyParser = require('body-parser');
-
-//incluir la conexcion mysql
-const config = require ('./config');
-const authRouter = require('./routes/authRoutes');
-
-//crear un server con express
+const express = require('express');
 const app = express();
-
-//usar el cors
-app.use (cors());
-
-//usar el body-parser para procesar peticiones POST
-app.use(bodyParser.json());
-
-//usar el puerto 3000
 const port = 3000;
 
-//crear una ruta por defecto
-app.get ('/', (req, res) => {
-    res.send('hello world')
-});
+// Middleware para parsear JSON
+app.use(express.json());
 
-app.use('/auth', authRouter); 
+// Importar rutas
+const authRoutes = require('./routes/authRoutes');
 
-//iniciar el servidor
-app.listen (port, ()  => {
-console.log(`sever running on port ${port}`);
+// Usar rutas
+app.use('/auth', authRoutes);
+
+// Iniciar servidor
+app.listen(port, () => {
+  console.log(`Servidor corriendo en http://localhost:${port}`);
 });

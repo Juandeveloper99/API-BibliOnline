@@ -1,16 +1,13 @@
-const mongoose = require('mongoose');
+const mysql = require('mysql2/promise');
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect('mongodb://localhost:3306/biblioteca', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('Error connecting to MongoDB', error);
-    process.exit(1);
-  }
-};
+const pool = mysql.createPool({
+  host: '127.0.0.1',
+  user: 'root',
+  password: '6012',
+  database: 'Biblioteca_app',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
-module.exports = connectDB;
+module.exports = pool;
